@@ -1707,7 +1707,25 @@ verificarSessao();
 
 </script>
 
+<button onclick="testarFuncao()">
+  TESTAR SUPABASE
+</button>
 
+<script>
+async function testarFuncao() {
+  const { data, error } =
+    await supabaseClient.functions.invoke("create-user");
+
+  if (error) {
+    alert("ERRO: " + error.message);
+    console.error(error);
+    return;
+  }
+
+  alert("SUCESSO: " + JSON.stringify(data));
+}
+</script>
+    
 </body>
 
 </html>
