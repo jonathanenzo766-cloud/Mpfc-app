@@ -1761,6 +1761,100 @@ async function testarSupabase() {
 }
 </script>
 
+    <button onclick="diagnosticoEdge()">
+    DIAGNÓSTICO EDGE
+</button>
+
+<script>
+async function diagnosticoEdge() {
+
+    const resultado = [];
+
+    resultado.push(
+        "URL: " + SUPABASE_URL
+    );
+
+    try {
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+        resultado.push(
+            "Sessão: " +
+            (
+                sessionData.session
+                    ? "OK"
+                    : "NÃO ENCONTRADA"
+            )
+        );
+
+        if (sessionError) {
+            resultado.push(
+                "Erro sessão: " +
+                sessionError.message
+            );
+        }
+
+        if (!sessionData.session) {
+            alert(resultado.join("\n"));
+            return;
+        }
+
+        resultado.push("Token: OK");
+
+        try {
+
+            const resposta = await fetch(
+                SUPABASE_URL +
+                "/functions/v1/create-user",
+                {
+                    method: "OPTIONS"
+                }
+            );
+
+            resultado.push(
+                "OPTIONS: " +
+                resposta.status
+            );
+
+            resultado.push(
+                "CORS: " +
+                (
+                    resposta.headers.get(
+                        "access-control-allow-origin"
+                    ) || "não encontrado"
+                )
+            );
+
+        } catch (e) {
+
+            resultado.push(
+                "OPTIONS ERRO: " +
+                e.message
+            );
+
+        }
+
+    } catch (e) {
+
+        resultado.push(
+            "ERRO GERAL: " +
+            e.message
+        );
+
+    }
+
+    alert(
+        resultado.join("\n")
+    );
+}
+</script>
+
+</body>
+</html>
+
 </body>
 
 </html>
