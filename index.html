@@ -1760,6 +1760,33 @@ async function testarSupabase() {
   }
 }
 </script>
+
+    <button onclick="verificarSessao()">
+  VERIFICAR SESSÃO
+</button>
+
+<script>
+async function verificarSessao() {
+  const { data, error } =
+    await supabaseClient.auth.getSession();
+
+  if (error) {
+    alert("ERRO: " + error.message);
+    return;
+  }
+
+  if (!data.session) {
+    alert("NÃO HÁ SESSÃO");
+    return;
+  }
+
+  alert(
+    "SESSÃO OK\n" +
+    "Usuário: " +
+    data.session.user.email
+  );
+}
+</script>
     
 </body>
 
