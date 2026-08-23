@@ -1709,6 +1709,53 @@ verificarSessao();
 
 </script>
 
+<button onclick="testarEdgeFunction()">
+  TESTAR EDGE FUNCTION
+</button>
+
+async function testarEdgeFunction() {
+  try {
+    const { data, error } =
+      await supabaseClient.auth.getSession();
+
+    if (error) {
+      alert("ERRO SESSÃO:\n" + error.message);
+      return;
+    }
+
+    if (!data.session) {
+      alert("Você não está logado.");
+      return;
+    }
+
+    const response = await fetch(
+      SUPABASE_URL + "/functions/v1/hyper-processor",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":
+            "Bearer " + data.session.access_token,
+          "apikey": SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({})
+      }
+    );
+
+    const texto = await response.text();
+
+    alert(
+      "STATUS: " +
+      response.status +
+      "\n\nRESPOSTA:\n" +
+      texto
+    );
+
+  } catch (error) {
+    alert("ERRO:\n" + error.message);
+  }
+}
+
 </body>
 </html>
 
