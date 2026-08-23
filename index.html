@@ -1706,48 +1706,7 @@ verificarSessao();
 
 
 </script>
-async function testarEdgeFunction() {
-  try {
-    const { data: sessionData, error: sessionError } =
-      await supabaseClient.auth.getSession();
 
-    if (sessionError) {
-      alert("ERRO SESSÃO:\n" + sessionError.message);
-      return;
-    }
-
-    if (!sessionData.session) {
-      alert("Você não está logado.");
-      return;
-    }
-
-    const response = await fetch(
-      SUPABASE_URL + "/functions/v1/hyper-processor",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-            "Bearer " + sessionData.session.access_token,
-          "apikey": SUPABASE_ANON_KEY
-        },
-        body: JSON.stringify({})
-      }
-    );
-
-    const texto = await response.text();
-
-    alert(
-      "STATUS: " +
-      response.status +
-      "\n\nRESPOSTA:\n" +
-      texto
-    );
-
-  } catch (error) {
-    alert("ERRO:\n" + error.message);
-  }
-}
 </script>
 
 </body>
