@@ -1725,6 +1725,41 @@ async function testarFuncao() {
   alert("SUCESSO: " + JSON.stringify(data));
 }
 </script>
+
+    <button onclick="testarSupabase()">
+  TESTAR SUPABASE
+</button>
+
+<script>
+async function testarSupabase() {
+  try {
+    const { data, error } =
+      await supabaseClient.functions.invoke(
+        "create-user",
+        {
+          body: {}
+        }
+      );
+
+    if (error) {
+      alert("ERRO: " + error.message);
+      console.error(error);
+      return;
+    }
+
+    alert(
+      "SUCESSO: " +
+      JSON.stringify(data)
+    );
+
+  } catch (error) {
+    alert(
+      "ERRO: " +
+      error.message
+    );
+  }
+}
+</script>
     
 </body>
 
