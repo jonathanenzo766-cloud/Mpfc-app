@@ -1706,149 +1706,47 @@ verificarSessao();
 
 
 </script>
-
-<button onclick="testarFuncao()">
-  TESTAR SUPABASE
+<button onclick="testarEdgeFunction()">
+    TESTAR EDGE FUNCTION
 </button>
 
 <script>
-async function testarFuncao() {
-  const { data, error } =
-    await supabaseClient.functions.invoke("create-user");
-
-  if (error) {
-    alert("ERRO: " + error.message);
-    console.error(error);
-    return;
-  }
-
-  alert("SUCESSO: " + JSON.stringify(data));
-}
-</script>
-
-    <button onclick="testarSupabase()">
-  TESTAR SUPABASE
-</button>
-
-<script>
-async function testarSupabase() {
-  try {
-    const { data, error } =
-      await supabaseClient.functions.invoke(
-        "create-user",
-        {
-          body: {}
-        }
-      );
-
-    if (error) {
-      alert("ERRO: " + error.message);
-      console.error(error);
-      return;
-    }
-
-    alert(
-      "SUCESSO: " +
-      JSON.stringify(data)
-    );
-
-  } catch (error) {
-    alert(
-      "ERRO: " +
-      error.message
-    );
-  }
-}
-</script>
-
-    <button onclick="diagnosticoEdge()">
-    DIAGNÓSTICO EDGE
-</button>
-
-<script>
-async function diagnosticoEdge() {
-
-    const resultado = [];
-
-    resultado.push(
-        "URL: " + SUPABASE_URL
-    );
+async function testarEdgeFunction() {
 
     try {
 
-        const {
-            data: sessionData,
-            error: sessionError
-        } = await supabaseClient.auth.getSession();
-
-        resultado.push(
-            "Sessão: " +
-            (
-                sessionData.session
-                    ? "OK"
-                    : "NÃO ENCONTRADA"
-            )
-        );
-
-        if (sessionError) {
-            resultado.push(
-                "Erro sessão: " +
-                sessionError.message
-            );
-        }
-
-        if (!sessionData.session) {
-            alert(resultado.join("\n"));
-            return;
-        }
-
-        resultado.push("Token: OK");
-
-        try {
-
-            const resposta = await fetch(
-                SUPABASE_URL +
-                "/functions/v1/create-user",
+        const { data, error } =
+            await supabaseClient.functions.invoke(
+                "hyper-processor",
                 {
-                    method: "OPTIONS"
+                    body: {}
                 }
             );
 
-            resultado.push(
-                "OPTIONS: " +
-                resposta.status
+        if (error) {
+
+            alert(
+                "ERRO:\n" +
+                error.message
             );
 
-            resultado.push(
-                "CORS: " +
-                (
-                    resposta.headers.get(
-                        "access-control-allow-origin"
-                    ) || "não encontrado"
-                )
-            );
-
-        } catch (e) {
-
-            resultado.push(
-                "OPTIONS ERRO: " +
-                e.message
-            );
-
+            console.error(error);
+            return;
         }
 
-    } catch (e) {
+        alert(
+            "SUCESSO:\n" +
+            JSON.stringify(data)
+        );
 
-        resultado.push(
-            "ERRO GERAL: " +
-            e.message
+    } catch (error) {
+
+        alert(
+            "ERRO:\n" +
+            error.message
         );
 
     }
-
-    alert(
-        resultado.join("\n")
-    );
 }
 </script>
 
